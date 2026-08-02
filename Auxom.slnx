@@ -1,4 +1,7 @@
 <Solution>
+  <Folder Name="/Solution Items/">
+    <File Path=".gitignore" />
+  </Folder>
   <Project Path="Auxom.API/Auxom.API.csproj" />
   <Project Path="Auxom.Application/Auxom.Application.csproj" />
   <Project Path="Auxom.Domain/Auxom.Domain.csproj" />
