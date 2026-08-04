@@ -1,7 +1,9 @@
 ﻿using AutoMapper;
+using Auxom.Application.DTOs.Address;
 using Auxom.Application.DTOs.Auth;
 using Auxom.Application.DTOs.Cart;
 using Auxom.Application.DTOs.Product;
+using Auxom.Application.DTOs.Wishlist;
 using Auxom.Domain.Entities;
 using System;
 using System.Collections.Generic;
@@ -40,6 +42,34 @@ namespace Auxom.Application.Mappings
                     opt => opt.MapFrom(src => src.Product.Image))
                 .ForMember(dest => dest.TotalPrice,
                     opt => opt.MapFrom(src => src.Product.Price * src.Quantity));
+
+            CreateMap<CreateWishlistDto, Wishlist>();
+
+            CreateMap<Wishlist, WishlistDto>()
+                 .ForMember(dest => dest.WishlistId,
+                 opt => opt.MapFrom(src => src.Id))
+                 .ForMember(dest => dest.ProductName,
+                  opt => opt.MapFrom(src => src.Product.Name))
+                 .ForMember(dest => dest.ProductPrice,
+                 opt => opt.MapFrom(src => src.Product.Price))
+                 .ForMember(dest => dest.Image,
+                  opt => opt.MapFrom(src => src.Product.Image))
+                  .ForMember(dest => dest.Color,
+                  opt => opt.MapFrom(src => src.Product.Color))
+                 .ForMember(dest => dest.InStock,
+                 opt => opt.MapFrom(src => src.Product.InStock))
+                 .ForMember(dest => dest.Rating,
+                 opt => opt.MapFrom(src => src.Product.Rating));
+
+            CreateMap<CreateAddressDto, Address>();
+            CreateMap<Address, AddressDto>()
+                .ForMember(dest => dest.AddressId,
+                opt => opt.MapFrom(src => src.Id)
+                );
+            CreateMap<UpdateAddressDto, Address>();
+                
+
+
         }
     }
 }

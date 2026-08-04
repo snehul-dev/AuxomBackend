@@ -2,12 +2,10 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Auxom.Domain.Entities
+namespace Auxom.Application.DTOs.Address
 {
-    public class Address
+    public class CreateAddressDto
     {
-        public Guid Id { get; set; }
-
         public string Name { get; set; } = string.Empty;
 
         public string Phone { get; set; } = string.Empty;
@@ -17,11 +15,5 @@ namespace Auxom.Domain.Entities
         public string City { get; set; } = string.Empty;
 
         public string Pincode { get; set; } = string.Empty;
-
-        public Guid UserId { get; set; }
-
-        public User User { get; set; }
-
-        public ICollection<Order> Orders { get; set; } = new List<Order>();
     }
 }
