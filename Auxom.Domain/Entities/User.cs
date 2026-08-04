@@ -22,7 +22,7 @@ namespace Auxom.Domain.Entities
 
         public ICollection<Wishlist> Wishlists { get; set; } = new List<Wishlist>();
 
-        public ICollection<Cart> Carts { get; set; } = new List<Cart>();
+        public Cart? Cart { get; set; }
 
         public ICollection<Address> Addresses { get; set; } = new List<Address>();
     }

@@ -21,7 +21,7 @@ namespace Auxom.Domain.Entities
         public DateTime? UpdatedAt { get; set; }
 
 
-        public ICollection<Cart> Carts { get; set; } = new List<Cart>();
+        public ICollection<CartItem> CartItems { get; set; } = new List<CartItem>();
 
         public ICollection<Wishlist> Wishlists { get; set; } = new List<Wishlist>();
 

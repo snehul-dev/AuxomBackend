@@ -7,7 +7,7 @@ using Auxom.Domain.Entities;
 
 namespace Auxom.Infrastructure.Data
 {
-    public class AuxomContext:DbContext
+    public class AuxomContext : DbContext
     {
 
         public AuxomContext(DbContextOptions<AuxomContext> options) : base(options)
@@ -17,6 +17,7 @@ namespace Auxom.Infrastructure.Data
         public DbSet<User> Users { get; set; }
         public DbSet<Product> Products { get; set; }
         public DbSet<Address> Addresses { get; set; }
+        public DbSet<CartItem> CartItems { get; set; }
         public DbSet<Cart> Carts { get; set; }
         public DbSet<Order> Orders { get; set; }
         public DbSet<OrderItem> OrderItems { get; set; }
@@ -43,6 +44,22 @@ namespace Auxom.Infrastructure.Data
                 .HasForeignKey(o => o.AddressId)
                 .OnDelete(DeleteBehavior.Restrict);
 
+            modelBuilder.Entity<Cart>()
+               .HasOne(c => c.User)
+               .WithOne(u => u.Cart)
+               .HasForeignKey<Cart>(c => c.UserId);
+
+            modelBuilder.Entity<CartItem>()
+                .HasOne(ci => ci.Cart)
+                .WithMany(c => c.CartItems)
+                .HasForeignKey(ci => ci.CartId);
+
+            modelBuilder.Entity<CartItem>()
+                .HasOne(ci => ci.Product)
+                .WithMany(p => p.CartItems)
+                .HasForeignKey(ci => ci.ProductId);
+
+
             modelBuilder.Entity<Product>()
                 .Property(p => p.Price)
                 .HasPrecision(18, 2);
@@ -54,6 +71,10 @@ namespace Auxom.Infrastructure.Data
             modelBuilder.Entity<OrderItem>()
                 .Property(oi => oi.Price)
                 .HasPrecision(18, 2);
+
+            modelBuilder.Entity<Cart>()
+                .HasIndex(c => c.UserId)
+                .IsUnique();
 
         }
     }

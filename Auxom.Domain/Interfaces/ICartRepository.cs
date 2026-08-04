@@ -7,18 +7,9 @@ namespace Auxom.Domain.Interfaces
 {
     public interface ICartRepository
     {
-        Task AddAsync(Cart cart);
-
-        Task<List<Cart>> GetByUserIdAsync(Guid userId);
-
-        Task<Cart?> GetByIdAsync(Guid cartId);
-
-        Task<Cart?> GetByUserAndProductAsync(Guid userId, Guid productId);
-
-        void Update(Cart cart);
-
-        void Delete(Cart cart);
-
+        Task<Cart?> GetCartByUserIdAsync(Guid userid);
+        Task AddCartAsync(Cart cart);
+        void UpdateCart(Cart cart);
         Task SaveChangesAsync();
     }
 }

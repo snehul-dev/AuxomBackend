@@ -4,7 +4,9 @@ using System.Text;
 
 namespace Auxom.Application.DTOs.Cart
 {
-    internal class UpdateCartDto
+    public class UpdateCartItemDto
     {
+        public Guid CartItemId { get; set; }
+        public int Quantity { get; set; }
     }
 }

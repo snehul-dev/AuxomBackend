@@ -4,7 +4,13 @@ using System.Text;
 
 namespace Auxom.Application.DTOs.Cart
 {
-    internal class CartDto
+    public class CartDto
     {
+     
+        public Guid CartId { get; set; }
+        public decimal GrandTotal { get; set; }
+        public List<CartItemDto> Items { get; set; } = new();
+
+        
     }
 }
