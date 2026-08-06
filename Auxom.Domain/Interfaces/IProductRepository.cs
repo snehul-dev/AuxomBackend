@@ -9,6 +9,9 @@ namespace Auxom.Domain.Interfaces
     {
         Task<Product?> GetProductByIdAsync(Guid id);
 
+        Task<IEnumerable<Product>> SearchProductsAsync(string keyword);
+        Task<IEnumerable<Product>> FilterProductsAsync(ProductFilter filter);
+       
         Task<IEnumerable<Product>> GetProductsAsync();
 
         Task AddProductAsync(Product product);

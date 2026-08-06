@@ -10,7 +10,7 @@ namespace Auxom.Application.Interfaces.Services
         Task<CartDto> GetCartAsync(Guid userid);
         Task AddCartAsync(Guid userid ,AddCartDto dto);
         Task<bool> UpdateQuantityAsync(Guid cartitemid, int quantity);
-        Task<bool> RemoveCartItemAsync(Guid cartitemid);
+        Task RemoveCartItemAsync(Guid cartitemid);
         Task ClearCartAsync(Guid userId);
     }
 }

@@ -29,6 +29,10 @@ namespace Auxom.Infrastructure.Repositories
                 .FirstOrDefaultAsync(c =>c.UserId == userid);
 
         }
+        public void ClearCart(Cart cart)
+        {
+            _context.Carts.Remove(cart);
+        }
 
         public async Task SaveChangesAsync()
         {

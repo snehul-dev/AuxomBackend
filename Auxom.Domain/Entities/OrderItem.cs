@@ -12,12 +12,12 @@ namespace Auxom.Domain.Entities
 
         public Guid OrderId { get; set; }
 
-        public int Qty { get; set; }
+        public int Quantity { get; set; }
 
         public decimal Price { get; set; }
 
-        public Order Order { get; set; }
+        public Order Order { get; set; } = null!;
 
-        public Product Product { get; set; }
+        public Product Product { get; set; } = null!;
     }
 }

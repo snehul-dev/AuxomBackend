@@ -1,5 +1,6 @@
 using Auxom.Application.Interfaces.Services;
 using Auxom.Application.Mappings;
+using Auxom.Application.Middleware;
 using Auxom.Application.Services;
 using Auxom.Domain.Interfaces;
 using Auxom.Infrastructure.Data;
@@ -49,6 +50,9 @@ namespace Auxom.API
 
             builder.Services.AddScoped<IAddressRepository, AddressRepository>();
             builder.Services.AddScoped<IAddressService, AddressService>();
+
+            builder.Services.AddScoped<IOrderRepository, OrderRepository>();
+            builder.Services.AddScoped<IOrderService, OrderService>();
 
 
             // JWT Authentication
@@ -107,6 +111,7 @@ namespace Auxom.API
             }
 
             app.UseHttpsRedirection();
+            app.UseMiddleware<GlobalExceptionMiddleware>();
 
             // Authentication must come before Authorization
             app.UseAuthentication();

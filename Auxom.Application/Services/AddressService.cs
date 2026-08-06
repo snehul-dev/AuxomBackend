@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Auxom.Application.DTOs.Address;
+using Auxom.Application.Exceptions;
 using Auxom.Application.Interfaces.Services;
 using Auxom.Domain.Entities;
 using Auxom.Domain.Interfaces;
@@ -35,7 +36,7 @@ namespace Auxom.Application.Services
             var address = await _addressRepository.GetByUserAndAddressAsync(userId, addressId);
             if(address == null)
             {
-                throw new Exception("Address Not Found");
+                throw new NotFoundException("Address Not Found");
             }
 
 
@@ -48,7 +49,7 @@ namespace Auxom.Application.Services
             var addresses = await _addressRepository.GetByUserIdAsync(userId);
             if(!addresses.Any())
             {
-                throw new Exception("User don't have address");
+                throw new NotFoundException("User don't have address");
             }
 
            return _mapper.Map<IEnumerable<AddressDto>>(addresses);
@@ -61,9 +62,9 @@ namespace Auxom.Application.Services
             var addresses = await _addressRepository.GetByUserAndAddressAsync(userId, addressId);
             if(addresses == null)
             {
-                throw new Exception("Address Not Found");
+                throw new NotFoundException("Address Not Found");
             }
-
+             
             _mapper.Map(dto, addresses);
          
 

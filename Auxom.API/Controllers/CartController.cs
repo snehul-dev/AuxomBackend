@@ -46,10 +46,7 @@ namespace Auxom.API.Controllers
         public async Task<IActionResult> UpdateQuantity(Guid CartItemId , UpdateCartItemDto dto)
         {
             var updated = await _cartService.UpdateQuantityAsync(CartItemId, dto.Quantity);
-            if (!updated)
-            {
-                return NotFound();
-            }
+        
 
             return NoContent();
         }
@@ -57,12 +54,9 @@ namespace Auxom.API.Controllers
         [HttpDelete("items/{cartItemId}")]
         public async Task<IActionResult> RemoveCartItem(Guid cartItemId)
         {
-            var removed = await _cartService.RemoveCartItemAsync(cartItemId);
+             await _cartService.RemoveCartItemAsync(cartItemId);
 
-            if (!removed)
-            {
-                return NotFound();
-            }
+       
             return NoContent();
         }
 

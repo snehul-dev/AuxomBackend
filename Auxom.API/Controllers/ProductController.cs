@@ -1,5 +1,6 @@
 ﻿using Auxom.Application.DTOs.Product;
 using Auxom.Application.Interfaces.Services;
+using Auxom.Domain.Entities;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Auxom.API.Controllers
@@ -19,10 +20,7 @@ namespace Auxom.API.Controllers
         public async Task<IActionResult> GetProductById(Guid id)
         {
             var product = await _productService.GetProductByIdAsync(id);
-            if(product == null)
-            {
-                return NotFound();
-            }
+         
             return Ok(product);
 
         }
@@ -41,12 +39,9 @@ namespace Auxom.API.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteProductAsync(Guid id)
         {
-            var deleted = await _productService.DeleteProductAsync(id);
+            await _productService.DeleteProductAsync(id);
 
-            if (!deleted)
-            {
-                return NotFound();
-            }
+       
 
             return NoContent();
         }
@@ -62,13 +57,24 @@ namespace Auxom.API.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateProductAsync(Guid id, UpdateProductDto dto)
         {
-            var product = await _productService.UpdateProductAsync(id, dto);
+           await _productService.UpdateProductAsync(id, dto);
 
-            if (!product)
-            {
-                return NotFound();
-            }
             return Ok("Product updated Succesfully");
+        }
+
+        [HttpGet("search")]
+        public async Task<IActionResult> SearchProductsAsync([FromQuery] string keyword)
+        {
+            var products = await _productService.SearchProductsAsync(keyword);
+         
+            return Ok(products);
+        }
+
+        [HttpGet("filter")]
+        public async Task<IActionResult> FilterProductsAsync([FromQuery] ProductFilter filter)
+        {
+            var products = await _productService.FilterProductsAsync(filter);
+            return Ok(products);
         }
     }
 }

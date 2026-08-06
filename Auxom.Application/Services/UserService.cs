@@ -7,6 +7,7 @@ using System;
 using BCrypt.Net;
 using System.Collections.Generic;
 using System.Text;
+using Auxom.Application.Exceptions;
 
 namespace Auxom.Application.Services
 {
@@ -30,7 +31,7 @@ namespace Auxom.Application.Services
             var userexisting = await _userRepository.GetByEmailAsync(email);
             if(userexisting != null)
             {
-                throw new Exception("Email already exists.");
+                throw new BadRequestException("Email already exists.");
             }
            
             var user = _mapper.Map<User>(dto);
@@ -46,13 +47,13 @@ namespace Auxom.Application.Services
             var existinguser = await _userRepository.GetByEmailAsync(dto.Email);
             if(existinguser == null)
             {
-                throw new Exception("Email is incorrect");
+                throw new BadRequestException("Email is incorrect");
             }
 
             bool isValid = BCrypt.Net.BCrypt.Verify(dto.Password, existinguser.PasswordHash);
             if (!isValid)
             {
-                throw new Exception("Password is incorrect");
+                throw new BadRequestException("Password is incorrect");
             }
 
             string token = _jwtService.GenerateToken(existinguser);

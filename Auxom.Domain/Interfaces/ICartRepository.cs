@@ -10,6 +10,7 @@ namespace Auxom.Domain.Interfaces
         Task<Cart?> GetCartByUserIdAsync(Guid userid);
         Task AddCartAsync(Cart cart);
         void UpdateCart(Cart cart);
+        void ClearCart( Cart cart);
         Task SaveChangesAsync();
     }
 }

@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Auxom.Application.DTOs.Product;
+using Auxom.Application.Exceptions;
 using Auxom.Application.Interfaces.Services;
 using Auxom.Domain.Entities;
 using Auxom.Domain.Interfaces;
@@ -21,12 +22,13 @@ namespace Auxom.Application.Services
         }
         public async Task<ProductDto> AddProductAsync(CreateProductDto dto)
         {
+            if (dto.Price < 0)
+            {
+                throw new BadRequestException("Price Cannot Be Negative");
+            }
             var product = _mapper.Map<Product>(dto);
 
-            if(product.Price < 0)
-            {
-                throw new Exception("Price Cannot Be Negative");
-            }
+         
           
             await _productRepository.AddProductAsync(product);
             await _productRepository.SaveChangesAsync();
@@ -35,25 +37,28 @@ namespace Auxom.Application.Services
         }
             
 
-        public async Task<bool> DeleteProductAsync(Guid id)
+        public async Task DeleteProductAsync(Guid id)
         {
             var product = await _productRepository.GetProductByIdAsync(id);
 
             if(product == null)
             {
-                return false;
+                throw new NotFoundException("Product not found.");
             }
 
             _productRepository.DeleteProduct(product);
             await _productRepository.SaveChangesAsync();
 
-            return true;
 
         }
 
         public async Task<ProductDto?> GetProductByIdAsync(Guid id)
         {
             var product = await _productRepository.GetProductByIdAsync(id);
+            if (product == null)
+            {
+                throw new NotFoundException("Product not found.");
+            }
 
             return _mapper.Map<ProductDto>(product);
         }
@@ -64,28 +69,42 @@ namespace Auxom.Application.Services
             return _mapper.Map<IEnumerable<ProductDto>>(products);
         }
 
-        public async Task<bool> UpdateProductAsync(Guid id, UpdateProductDto dto)
+        public async Task UpdateProductAsync(Guid id, UpdateProductDto dto)
         {
            
             var product = await _productRepository.GetProductByIdAsync(id);
 
             if(product == null)
             {
-                return false;
+                throw new NotFoundException("Product not found.");
             }
             
-            if(product.Price < 0)
+            if(dto.Price < 0)
             {
-                throw new Exception("Price Cannot Be Negative");
+                throw new BadRequestException("Price Cannot Be Negative");
             }
 
             _mapper.Map(dto, product);
             product.UpdatedAt = DateTime.UtcNow;
 
             await _productRepository.SaveChangesAsync();
-            return true;
+           
 
       
         }
+
+       public async Task<IEnumerable<ProductDto>> SearchProductsAsync(string keyword)
+        {
+           var products =  await _productRepository.SearchProductsAsync(keyword);
+           return  _mapper.Map<IEnumerable<ProductDto>>(products);
+        }
+        public async Task<IEnumerable<ProductDto>> FilterProductsAsync(ProductFilter filter)
+        {
+            
+            var products = await _productRepository.FilterProductsAsync(filter);
+            return _mapper.Map<IEnumerable<ProductDto>>(products);
+        }
+
+    
     }
 }

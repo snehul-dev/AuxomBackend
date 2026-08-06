@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Auxom.Application.DTOs.Wishlist;
+using Auxom.Application.Exceptions;
 using Auxom.Application.Interfaces.Services;
 using Auxom.Domain.Entities;
 using Auxom.Domain.Interfaces;
@@ -26,13 +27,13 @@ namespace Auxom.Application.Services
             var product = await _productRepository.GetProductByIdAsync(dto.ProductId);
             if(product == null)
             {
-                throw new Exception("Product Not Found");
+                throw new NotFoundException("Product Not Found");
             }
             var existInWishlist = await _wishlistRepository.GetByUserAndProductAsync(userId, dto.ProductId);
 
             if(existInWishlist != null)
             {
-                throw new Exception("Product is already in the wishlist.");
+                throw new BadRequestException("Product is already in the wishlist.");
             }
 
            var wishlist =  _mapper.Map<Wishlist>(dto);
@@ -48,6 +49,7 @@ namespace Auxom.Application.Services
         public async Task<IEnumerable<WishlistDto>> GetWishlistByUserIdAsync(Guid userId)
         {
             var wishlist = await _wishlistRepository.GetWishlistByUserIdAsync(userId);
+    
 
            return _mapper.Map<IEnumerable<WishlistDto>>(wishlist);
 
@@ -60,7 +62,7 @@ namespace Auxom.Application.Services
             var existInWishlist = await _wishlistRepository.GetByUserAndProductAsync(userId, productId);
             if(existInWishlist == null)
             {
-                throw new Exception("Product not found in wishlist.");
+                throw new NotFoundException("Product not found in wishlist.");
             }
             _wishlistRepository.Remove(existInWishlist);
 

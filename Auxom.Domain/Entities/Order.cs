@@ -18,7 +18,7 @@ namespace Auxom.Domain.Entities
 
         public string Status { get; set; } = "Pending";
 
-        public DateTime OrderDate { get; set; }
+        public DateTime OrderDate { get; set; } = DateTime.UtcNow;
 
         public User User { get; set; } = null!;
 

@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using AutoMapper;
+using Auxom.Application.Exceptions;
 
 namespace Auxom.Application.Services
 {
@@ -31,12 +32,12 @@ namespace Auxom.Application.Services
         {
             if(dto.Quantity <= 0)
             {
-                throw new Exception("Quantity must be greater than zero.");
+                throw new BadRequestException("Quantity must be greater than zero.");
             }
             var product = await _productRepository.GetProductByIdAsync(dto.ProductId);
             if(product == null)
             {
-                throw new Exception("Product not found");
+                throw new NotFoundException("Product not found");
             }
 
             var usercart = await _cartRepository.GetCartByUserIdAsync(userid);
@@ -59,7 +60,7 @@ namespace Auxom.Application.Services
                 var newQuantity = cartItem.Quantity + dto.Quantity;
                 if (newQuantity > product.StockQuantity)
                 {
-                    throw new Exception("Requested quantity exceeds available stock.");
+                    throw new BadRequestException("Requested quantity exceeds available stock.");
                 }
 
                 cartItem.Quantity = newQuantity;
@@ -71,7 +72,7 @@ namespace Auxom.Application.Services
             {
                 if(dto.Quantity > product.StockQuantity)
                 {
-                    throw new Exception("Requested quantity exceeds available stock.");
+                    throw new BadRequestException("Requested quantity exceeds available stock.");
                 }
                 cartItem = new CartItem
                 {
@@ -93,7 +94,7 @@ namespace Auxom.Application.Services
             var usercart = await _cartRepository.GetCartByUserIdAsync(userId);
              if (usercart == null)
             {
-                throw new Exception("Cart not found");
+                throw new NotFoundException("Cart not found");
             }
 
             var cartItems = await _cartItemRepository.GetByCartIdAsync(usercart.Id);
@@ -115,7 +116,7 @@ namespace Auxom.Application.Services
             var cart = await _cartRepository.GetCartByUserIdAsync(userid);
             if(cart == null)
             {
-                throw new Exception("Cart not found");
+                throw new NotFoundException("Cart not found");
             }
 
             return _mapper.Map<CartDto>(cart);
@@ -123,13 +124,13 @@ namespace Auxom.Application.Services
 
         }
 
-        public async Task<bool> RemoveCartItemAsync(Guid cartitemid)
+        public async Task RemoveCartItemAsync(Guid cartitemid)
         {
             var cartitem = await _cartItemRepository.GetByIdAsync(cartitemid);
 
             if(cartitem == null)
             {
-                return false;
+                throw new NotFoundException("Cart item not found.");
             }
 
             var cart = await _cartRepository.GetCartByUserIdAsync(cartitem.Cart.UserId);
@@ -143,31 +144,31 @@ namespace Auxom.Application.Services
 
        
             await _cartRepository.SaveChangesAsync();
-            return true;
+          
         }
 
         public async Task<bool> UpdateQuantityAsync(Guid cartitemid, int quantity)
         {
             if(quantity <= 0)
             {
-                return false;
+                throw new BadRequestException("Quantity must be greater than zero.");
             }
 
             var cartitem = await _cartItemRepository.GetByIdAsync(cartitemid);
             if(cartitem == null)
             {
-                return false;
+                throw new NotFoundException("Cart item not found.");
             }
 
             var product = await _productRepository.GetProductByIdAsync(cartitem.ProductId);
             if(product  == null)
             {
-                return false;
+                throw new NotFoundException("Product not found.");
             }
 
             if(quantity > product.StockQuantity)
             {
-                throw new Exception("Requested quantity exceeds available stock.");
+                throw new BadRequestException("Requested quantity exceeds available stock.");
             }
 
             cartitem.Quantity = quantity;

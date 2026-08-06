@@ -2,6 +2,7 @@
 using Auxom.Application.DTOs.Address;
 using Auxom.Application.DTOs.Auth;
 using Auxom.Application.DTOs.Cart;
+using Auxom.Application.DTOs.Order;
 using Auxom.Application.DTOs.Product;
 using Auxom.Application.DTOs.Wishlist;
 using Auxom.Domain.Entities;
@@ -21,6 +22,7 @@ namespace Auxom.Application.Mappings
             CreateMap<Product, ProductDto>();
             CreateMap<CreateProductDto, Product>();
             CreateMap<UpdateProductDto, Product>();
+            
 
             CreateMap<Cart, CartDto>()
             .ForMember(dest => dest.CartId,
@@ -67,6 +69,20 @@ namespace Auxom.Application.Mappings
                 opt => opt.MapFrom(src => src.Id)
                 );
             CreateMap<UpdateAddressDto, Address>();
+
+            CreateMap<Order, OrderDto>()
+                .ForMember(dest => dest.OrderId,
+                opt => opt.MapFrom(src => src.Id)
+                );
+            CreateMap<OrderItem, OrderItemDto>()
+                .ForMember(dest => dest.ProductName,
+                opt => opt.MapFrom(src => src.Product.Name)
+                )
+                .ForMember(dest => dest.Total,
+                opt => opt.MapFrom(src => src.Price * src.Quantity));
+            
+
+                
                 
 
 
