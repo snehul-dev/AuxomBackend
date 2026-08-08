@@ -10,14 +10,14 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi;
-
+using System.Security.Claims;  
 using System.Text;
 
 namespace Auxom.API
 {
     public class Program
     {
-        public static void Main(string[] args)
+        public static async Task Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
 
@@ -51,8 +51,10 @@ namespace Auxom.API
             builder.Services.AddScoped<IAddressRepository, AddressRepository>();
             builder.Services.AddScoped<IAddressService, AddressService>();
 
+           
             builder.Services.AddScoped<IOrderRepository, OrderRepository>();
             builder.Services.AddScoped<IOrderService, OrderService>();
+    
 
 
             // JWT Authentication
@@ -70,7 +72,9 @@ namespace Auxom.API
                         ValidAudience = builder.Configuration["Jwt:Audience"],
 
                         IssuerSigningKey = new SymmetricSecurityKey(
-                            Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]!))
+                            Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]!)),
+
+                         RoleClaimType = ClaimTypes.Role
                     };
                 });
 
@@ -103,6 +107,12 @@ namespace Auxom.API
             });
 
             var app = builder.Build();
+
+            using (var scope = app.Services.CreateScope())
+            {
+                var context = scope.ServiceProvider.GetRequiredService<AuxomContext>();
+                await AdminSeeder.SeedAdminAsync(context);
+            }
 
             if (app.Environment.IsDevelopment())
             {

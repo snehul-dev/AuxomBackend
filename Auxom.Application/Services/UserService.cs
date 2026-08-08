@@ -38,6 +38,7 @@ namespace Auxom.Application.Services
 
             user.Email = email;
             user.PasswordHash = BCrypt.Net.BCrypt.HashPassword(dto.Password);
+            user.Role = "User";
 
             await _userRepository.AddUserAsync(user);
             await _userRepository.SaveChangesAsync();
@@ -54,6 +55,11 @@ namespace Auxom.Application.Services
             if (!isValid)
             {
                 throw new BadRequestException("Password is incorrect");
+            }
+
+            if (existinguser.IsBlocked)
+            {
+                throw new BadRequestException("This User is Blocked");
             }
 
             string token = _jwtService.GenerateToken(existinguser);

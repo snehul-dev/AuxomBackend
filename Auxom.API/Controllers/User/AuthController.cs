@@ -2,7 +2,7 @@
 using Auxom.Application.Interfaces.Services;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Auxom.API.Controllers
+namespace Auxom.API.Controllers.User
 {
     [ApiController]
     [Route("api/[controller]")]

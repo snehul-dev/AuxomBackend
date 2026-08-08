@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 
-namespace Auxom.API.Controllers
+namespace Auxom.API.Controllers.User
 {
     [Authorize]
     [ApiController]

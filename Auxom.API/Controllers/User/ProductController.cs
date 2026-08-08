@@ -1,9 +1,10 @@
 ﻿using Auxom.Application.DTOs.Product;
 using Auxom.Application.Interfaces.Services;
 using Auxom.Domain.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Auxom.API.Controllers
+namespace Auxom.API.Controllers.User
 {
     [ApiController]
     [Route("api/[controller]")]
@@ -25,6 +26,7 @@ namespace Auxom.API.Controllers
 
         }
 
+        [Authorize(Roles ="Admin")]
         [HttpPost]
         public async Task<IActionResult> AddProductAsync(CreateProductDto product)
         {
@@ -36,6 +38,7 @@ namespace Auxom.API.Controllers
                 );
         }
 
+        [Authorize(Roles ="Admin")]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteProductAsync(Guid id)
         {
@@ -54,6 +57,7 @@ namespace Auxom.API.Controllers
 
         }
 
+        [Authorize(Roles ="Admin")]
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateProductAsync(Guid id, UpdateProductDto dto)
         {

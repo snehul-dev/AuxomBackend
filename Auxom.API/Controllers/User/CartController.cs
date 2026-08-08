@@ -6,7 +6,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Cryptography.Pkcs;
 
-namespace Auxom.API.Controllers
+namespace Auxom.API.Controllers.User
 {
     [Authorize]
     [ApiController]
