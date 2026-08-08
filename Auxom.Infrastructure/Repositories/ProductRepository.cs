@@ -106,6 +106,7 @@ namespace Auxom.Infrastructure.Repositories
 
                 }
             }
+        
 
             if (!string.IsNullOrWhiteSpace(filter.Category))
             {
