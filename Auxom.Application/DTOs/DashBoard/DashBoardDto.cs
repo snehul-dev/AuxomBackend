@@ -10,6 +10,8 @@ namespace Auxom.Application.DTOs.DashBoard
         public int TotalOrders { get; set; }
         public int TotalUsers { get; set; }
         public decimal TotalRevenue { get; set; }
+
+        public List<MonthlySalesDto> MonthlySales { get; set; } = new();
         
     }
 }

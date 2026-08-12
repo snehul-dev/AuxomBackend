@@ -28,6 +28,15 @@ namespace Auxom.Infrastructure.Repositories
                 .FirstOrDefaultAsync(o => o.UserId == userId && o.Id == orderId);
 
         }
+        public async Task<int> GetTotalOrdersAsync()
+        {
+            return await _context.Orders.CountAsync();
+        }
+        public async Task<decimal> GetTotalRevenueAsync()
+        {
+            return await _context.Orders.Where(o => o.Status == "Delivered").SumAsync(o => o.Total);
+            
+        }
 
         public async Task<IEnumerable<Order>> GetOrderByUserAsync(Guid userId)
         {
@@ -36,10 +45,17 @@ namespace Auxom.Infrastructure.Repositories
                 .ThenInclude(oi =>oi.Product)
                 . Where(o => o.UserId == userId).ToListAsync();
         }
+        public async Task<IEnumerable<Order>> GetOrdersAsync()
+        {
+            return await _context.Orders.ToListAsync();
+        }
 
         public async Task SaveChangesAsync()
         {
             await _context.SaveChangesAsync();
         }
+
+       
+
     }
 }

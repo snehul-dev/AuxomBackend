@@ -59,5 +59,11 @@ namespace Auxom.Infrastructure.Repositories
             _context.Users.Update(updateduser);
             return Task.CompletedTask;
         }
+
+        public async Task<int> GetTotalUsersAsync()
+        {
+            return await _context.Users.CountAsync();
+        }
+
     }
 }

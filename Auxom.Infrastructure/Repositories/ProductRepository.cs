@@ -47,6 +47,10 @@ namespace Auxom.Infrastructure.Repositories
         {
             _context.Products.Update(updatedProduct);
         }
+        public async Task<int> GetTotalProductsAsync()
+        {
+           return await _context.Products.CountAsync();
+        }
 
         public async Task<IEnumerable<Product>> SearchProductsAsync(string keyword)
         {

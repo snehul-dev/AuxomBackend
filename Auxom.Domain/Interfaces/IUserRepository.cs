@@ -12,6 +12,7 @@ namespace Auxom.Domain.Interfaces
         Task<User?> GetByIdAsync(Guid id);
 
         Task<IEnumerable<User>> GetAllUsersAsync();
+        Task<int> GetTotalUsersAsync();
 
         Task AddUserAsync(User user);
 

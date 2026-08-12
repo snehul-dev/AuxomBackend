@@ -6,6 +6,7 @@ namespace Auxom.Application.DTOs.DashBoard
 {
     public class MonthlySalesDto
     {
+        public int MonthNumber { get; set; }
         public string Month { get; set; } = string.Empty;
         public decimal Sales { get; set; }
     }

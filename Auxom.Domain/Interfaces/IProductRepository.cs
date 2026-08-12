@@ -11,6 +11,7 @@ namespace Auxom.Domain.Interfaces
 
         Task<IEnumerable<Product>> SearchProductsAsync(string keyword);
         Task<IEnumerable<Product>> FilterProductsAsync(ProductFilter filter);
+        Task<int> GetTotalProductsAsync();
        
         Task<IEnumerable<Product>> GetProductsAsync();
 

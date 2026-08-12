@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Auxom.Application.DTOs.DashBoard;
 using Auxom.Application.DTOs.Order;
 using Auxom.Application.Exceptions;
 using Auxom.Application.Interfaces.Services;
@@ -121,5 +122,7 @@ namespace Auxom.Application.Services
             _cartRepository.ClearCart(cart);
             await _orderRepository.SaveChangesAsync();
         }
+
+  
     }
 }
