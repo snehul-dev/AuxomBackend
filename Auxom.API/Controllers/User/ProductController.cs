@@ -1,4 +1,5 @@
-﻿using Auxom.Application.DTOs.Product;
+﻿using Auxom.API.Requests.Product;
+using Auxom.Application.DTOs.Product;
 using Auxom.Application.Interfaces.Services;
 using Auxom.Domain.Entities;
 using Microsoft.AspNetCore.Authorization;
@@ -28,9 +29,9 @@ namespace Auxom.API.Controllers.User
 
         [Authorize(Roles ="Admin")]
         [HttpPost]
-        public async Task<IActionResult> AddProductAsync(CreateProductDto product)
+        public async Task<IActionResult> AddProductAsync([FromForm] CreateProductRequest request)
         {
-            var createdProduct = await _productService.AddProductAsync(product);
+            var createdProduct = await _productService.AddProductAsync(request);
             return CreatedAtAction(
                 nameof(GetProductById),
                 new { id = createdProduct.Id },
@@ -59,7 +60,7 @@ namespace Auxom.API.Controllers.User
 
         [Authorize(Roles ="Admin")]
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateProductAsync(Guid id, UpdateProductDto dto)
+        public async Task<IActionResult> UpdateProductAsync(Guid id,[FromForm] UpdateProductRequest request)
         {
            await _productService.UpdateProductAsync(id, dto);
 

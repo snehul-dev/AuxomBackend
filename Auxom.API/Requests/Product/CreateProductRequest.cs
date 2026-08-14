@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Microsoft.AspNetCore.Http;
-namespace Auxom.Application.DTOs.Product
+﻿namespace Auxom.API.Requests.Product
 {
-    public class CreateProductDto
+    public class CreateProductRequest
     {
         public string Name { get; set; } = string.Empty;
         public decimal Price { get; set; }
@@ -15,5 +11,7 @@ namespace Auxom.Application.DTOs.Product
         public int StockQuantity { get; set; }
         public bool IsActive { get; set; } = true;
         public string Description { get; set; } = string.Empty;
+
+        public IFormFile? Image { get; set; }
     }
 }

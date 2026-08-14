@@ -11,7 +11,6 @@ namespace Auxom.Application.DTOs.Product
         public string Category { get; set; } = string.Empty;
         public double Rating { get; set; }
         public string Color { get; set; } = string.Empty;
-        public string Image { get; set; } = string.Empty;
         public bool InStock { get; set; }
         public int StockQuantity { get; set; }
         public bool IsActive { get; set; }
