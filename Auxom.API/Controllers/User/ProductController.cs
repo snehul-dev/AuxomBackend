@@ -1,4 +1,5 @@
-﻿using Auxom.API.Requests.Product;
+﻿using AutoMapper;
+using Auxom.API.Requests.Product;
 using Auxom.Application.DTOs.Product;
 using Auxom.Application.Interfaces.Services;
 using Auxom.Domain.Entities;
@@ -9,29 +10,45 @@ namespace Auxom.API.Controllers.User
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class ProductController:ControllerBase
+    public class ProductController : ControllerBase
     {
 
         private readonly IProductService _productService;
+        private readonly IMapper _mapper;
+        private readonly IImageService _imageService;
 
-        public ProductController(IProductService productService)
+        public ProductController(IProductService productService, IMapper mapper, IImageService imageService)
         {
             _productService = productService;
+            _mapper = mapper;
+            _imageService = imageService;
         }
         [HttpGet("{id}")]
         public async Task<IActionResult> GetProductById(Guid id)
         {
             var product = await _productService.GetProductByIdAsync(id);
-         
+
             return Ok(product);
 
         }
 
-        [Authorize(Roles ="Admin")]
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public async Task<IActionResult> AddProductAsync([FromForm] CreateProductRequest request)
         {
-            var createdProduct = await _productService.AddProductAsync(request);
+            if (request.Image == null || request.Image.Length == 0)
+            {
+                return BadRequest("Product image is required.");
+            }
+            string imageUrl = await _imageService.UploadImageAsync(
+                request.Image.OpenReadStream(),
+                request.Image.FileName,
+                request.Image.ContentType
+                );
+            var dto = _mapper.Map<CreateProductDto>(request);
+            dto.Image = imageUrl;
+
+            var createdProduct = await _productService.AddProductAsync(dto);
             return CreatedAtAction(
                 nameof(GetProductById),
                 new { id = createdProduct.Id },
@@ -39,13 +56,13 @@ namespace Auxom.API.Controllers.User
                 );
         }
 
-        [Authorize(Roles ="Admin")]
+        [Authorize(Roles = "Admin")]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteProductAsync(Guid id)
         {
             await _productService.DeleteProductAsync(id);
 
-       
+
 
             return NoContent();
         }
@@ -58,20 +75,37 @@ namespace Auxom.API.Controllers.User
 
         }
 
-        [Authorize(Roles ="Admin")]
+        [Authorize(Roles = "Admin")]
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateProductAsync(Guid id,[FromForm] UpdateProductRequest request)
+        public async Task<IActionResult> UpdateProductAsync(Guid id, [FromForm] UpdateProductRequest request)
         {
-           await _productService.UpdateProductAsync(id, dto);
+
+            var dto = _mapper.Map<UpdateProductDto>(request);
+            if (request.Image != null)
+            {
+                string imageUrl = await _imageService.UploadImageAsync(
+                request.Image.OpenReadStream(),
+                request.Image.FileName,
+                request.Image.ContentType
+          );
+               
+                dto.Image = imageUrl;
+             
+            }
+            await _productService.UpdateProductAsync(id, dto);
 
             return Ok("Product updated Succesfully");
+
+
+
+
         }
 
         [HttpGet("search")]
         public async Task<IActionResult> SearchProductsAsync([FromQuery] string keyword)
         {
             var products = await _productService.SearchProductsAsync(keyword);
-         
+
             return Ok(products);
         }
 

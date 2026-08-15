@@ -1,3 +1,4 @@
+using Auxom.API.Mapping;
 using Auxom.Application.Interfaces.Services;
 using Auxom.Application.Mappings;
 using Auxom.Application.Middleware;
@@ -10,7 +11,8 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi;
-using System.Security.Claims;  
+using System.Security.Claims;
+using CloudinaryDotNet;
 using System.Text;
 
 namespace Auxom.API
@@ -31,6 +33,7 @@ namespace Auxom.API
 
             // AutoMapper
             builder.Services.AddAutoMapper(typeof(MappingProfile));
+            builder.Services.AddAutoMapper(typeof(ApiMapping));
 
             // Dependency Injection
             builder.Services.AddScoped<IJwtService, JwtService>();
@@ -56,7 +59,17 @@ namespace Auxom.API
             builder.Services.AddScoped<IOrderService, OrderService>();
 
             builder.Services.AddScoped<IDashBoardService, DashBoardService>();
-    
+            builder.Services.AddScoped<IImageService, CloudinaryImageService>();
+
+            var cloudinary = new Cloudinary(
+            new Account(
+                builder.Configuration["CloudinarySettings:CloudName"],
+                builder.Configuration["CloudinarySettings:ApiKey"],
+                builder.Configuration["CloudinarySettings:ApiSecret"]
+            )
+        );
+
+            builder.Services.AddSingleton(cloudinary);
 
 
             // JWT Authentication

@@ -10,6 +10,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
+
 namespace Auxom.Application.Mappings
 {
     public class MappingProfile:Profile
@@ -21,7 +22,10 @@ namespace Auxom.Application.Mappings
 
             CreateMap<Product, ProductDto>();
             CreateMap<CreateProductDto, Product>();
-            CreateMap<UpdateProductDto, Product>();
+            CreateMap<UpdateProductDto, Product>()
+                .ForMember(
+                dest => dest.Image,
+                opt => opt.Condition(src => src.Image != null));
             
 
             CreateMap<Cart, CartDto>()
@@ -62,6 +66,8 @@ namespace Auxom.Application.Mappings
                  opt => opt.MapFrom(src => src.Product.InStock))
                  .ForMember(dest => dest.Rating,
                  opt => opt.MapFrom(src => src.Product.Rating));
+
+    
 
             CreateMap<CreateAddressDto, Address>();
             CreateMap<Address, AddressDto>()

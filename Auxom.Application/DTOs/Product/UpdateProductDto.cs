@@ -15,5 +15,6 @@ namespace Auxom.Application.DTOs.Product
         public int StockQuantity { get; set; }
         public bool IsActive { get; set; }
         public string Description { get; set; } = string.Empty;
+        public string? Image { get; set; } 
     }
 }

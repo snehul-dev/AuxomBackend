@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using Microsoft.AspNetCore.Http;
+
 namespace Auxom.Application.DTOs.Product
 {
     public class CreateProductDto
@@ -15,5 +15,6 @@ namespace Auxom.Application.DTOs.Product
         public int StockQuantity { get; set; }
         public bool IsActive { get; set; } = true;
         public string Description { get; set; } = string.Empty;
+        public string? Image { get; set; } = string.Empty;
     }
 }

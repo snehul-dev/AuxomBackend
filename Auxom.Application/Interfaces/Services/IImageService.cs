@@ -6,6 +6,10 @@ namespace Auxom.Application.Interfaces.Services
 {
     public interface IImageService
     {
-        Task<string> UploadImageAsync(IFormFile image)
+        Task<string> UploadImageAsync(
+            Stream imageStream,
+            string fileName,
+            string contentType
+            );
     }
 }
