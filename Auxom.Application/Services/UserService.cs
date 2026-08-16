@@ -1,13 +1,14 @@
 ﻿using AutoMapper;
 using Auxom.Application.DTOs.Auth;
+using Auxom.Application.DTOs.User;
+using Auxom.Application.Exceptions;
 using Auxom.Application.Interfaces.Services;
 using Auxom.Domain.Entities;
 using Auxom.Domain.Interfaces;
-using System;
 using BCrypt.Net;
+using System;
 using System.Collections.Generic;
 using System.Text;
-using Auxom.Application.Exceptions;
 
 namespace Auxom.Application.Services
 {
@@ -69,6 +70,17 @@ namespace Auxom.Application.Services
 
         }
 
-     
+        public async Task UpdateUserStatusAsync(Guid userId, UserStatusDto dto)
+        {
+            var user = await _userRepository.GetByIdAsync(userId);
+            if(user == null)
+            {
+                 throw new  NotFoundException("User Not Found");
+            }
+            user.IsBlocked = dto.IsBlocked;
+            await _userRepository.SaveChangesAsync();
+        }
+
+
     }
 }
