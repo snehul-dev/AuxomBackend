@@ -11,6 +11,7 @@ namespace Auxom.Domain.Interfaces
         Task<IEnumerable<Order>> GetOrderByUserAsync(Guid userId);
         Task<Order?> GetByIdAsync(Guid userId, Guid OrderId);
         Task<IEnumerable<Order>> GetOrdersAsync();
+        Task<Order?> GetOrderById(Guid OrderId);
         Task<int> GetTotalOrdersAsync();
         Task<decimal> GetTotalRevenueAsync();
         Task SaveChangesAsync();

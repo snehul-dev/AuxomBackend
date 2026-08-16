@@ -47,7 +47,14 @@ namespace Auxom.Infrastructure.Repositories
         }
         public async Task<IEnumerable<Order>> GetOrdersAsync()
         {
-            return await _context.Orders.ToListAsync();
+            return await _context.Orders.
+                Include(o =>o.User)
+                .Include(o =>o.OrderItems)
+                .ToListAsync();
+        }
+        public async Task<Order?> GetOrderById(Guid OrderId)
+        {
+            return  await _context.Orders.FindAsync(OrderId);
         }
 
         public async Task SaveChangesAsync()

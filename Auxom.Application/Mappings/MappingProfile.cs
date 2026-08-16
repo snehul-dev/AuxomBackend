@@ -4,6 +4,7 @@ using Auxom.Application.DTOs.Auth;
 using Auxom.Application.DTOs.Cart;
 using Auxom.Application.DTOs.Order;
 using Auxom.Application.DTOs.Product;
+using Auxom.Application.DTOs.User;
 using Auxom.Application.DTOs.Wishlist;
 using Auxom.Domain.Entities;
 using System;
@@ -66,6 +67,15 @@ namespace Auxom.Application.Mappings
                  opt => opt.MapFrom(src => src.Product.InStock))
                  .ForMember(dest => dest.Rating,
                  opt => opt.MapFrom(src => src.Product.Rating));
+
+            CreateMap<User, AdminUserDto>();
+            CreateMap<Order, AdminOrderDto>()
+                .ForMember(dest => dest.UserName,
+                opt => opt.MapFrom(src => src.User.FullName)
+                )
+                .ForMember(dest => dest.ItemCount,
+                opt => opt.MapFrom(src => src.OrderItems.Sum(x => x.Quantity))
+                );
 
     
 

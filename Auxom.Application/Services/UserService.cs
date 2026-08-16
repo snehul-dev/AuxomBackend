@@ -81,6 +81,12 @@ namespace Auxom.Application.Services
             await _userRepository.SaveChangesAsync();
         }
 
+       public async Task<IEnumerable<AdminUserDto>> GetAllUsersAsync()
+        {
+            var users = await _userRepository.GetAllUsersAsync();
+            return _mapper.Map<IEnumerable<AdminUserDto>>(users);
+        }
+
 
     }
 }

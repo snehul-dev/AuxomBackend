@@ -12,7 +12,8 @@ namespace Auxom.Application.Interfaces.Services
         Task PlaceOrderAsync(Guid userId,CreateOrderDto dto);
         Task<IEnumerable<OrderDto>> GetOrdersByUserAsync(Guid userId);
         Task<OrderDto> GetOrderByIdAsync(Guid userId ,  Guid orderId);
-
+        Task<IEnumerable<AdminOrderDto>> GetAllOrdersAsync();
+        Task<string> UpdateOrderStatusAsync(Guid orderId, AdminOrderStatusDto dto);
 
     }
 }

@@ -123,6 +123,29 @@ namespace Auxom.Application.Services
             await _orderRepository.SaveChangesAsync();
         }
 
-  
+        public async Task<IEnumerable<AdminOrderDto>> GetAllOrdersAsync()
+        {
+            var orders = await _orderRepository.GetOrdersAsync();
+            if(orders == null)
+            {
+                throw new NotFoundException("Orders not found");
+            }
+
+            return  _mapper.Map<IEnumerable<AdminOrderDto>>(orders);
+        }
+
+        public async Task<string> UpdateOrderStatusAsync(Guid orderId, AdminOrderStatusDto dto)
+        {
+            var order = await _orderRepository.GetOrderById(orderId);
+            if(order == null)
+            {
+                throw new NotFoundException("Order not found");
+            }
+            order.Status = dto.Status;
+            await _orderRepository.SaveChangesAsync();
+            return order.Status;
+        }
+
+
     }
 }

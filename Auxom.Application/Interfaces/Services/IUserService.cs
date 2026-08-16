@@ -11,5 +11,6 @@ namespace Auxom.Application.Interfaces.Services
         Task RegisterAsync(RegisterDto dto);
         Task<LoginResponseDto> LoginAsync(LoginDto dto);
         Task UpdateUserStatusAsync(Guid userId, UserStatusDto dto);
+        Task<IEnumerable<AdminUserDto>> GetAllUsersAsync();
     }
 }

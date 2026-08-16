@@ -15,6 +15,13 @@ namespace Auxom.API.Controllers.Admin
         {
             _userService = userService;
         }
+        [HttpGet]
+        public async Task<IActionResult> GetAllUsersAsync()
+        {
+            var users = await _userService.GetAllUsersAsync();
+            return Ok(users);
+        }
+
         [HttpPatch("{userId}/status")]
         public async Task<IActionResult> UpdateUserStatusAsync(Guid userId ,UserStatusDto dto)
         {
