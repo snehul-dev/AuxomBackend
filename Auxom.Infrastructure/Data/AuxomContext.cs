@@ -22,6 +22,7 @@ namespace Auxom.Infrastructure.Data
         public DbSet<Order> Orders { get; set; }
         public DbSet<OrderItem> OrderItems { get; set; }
         public DbSet<Wishlist> Wishlists { get; set; }
+        public DbSet<Review> Reviews { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -75,6 +76,10 @@ namespace Auxom.Infrastructure.Data
             modelBuilder.Entity<Cart>()
                 .HasIndex(c => c.UserId)
                 .IsUnique();
+
+            modelBuilder.Entity<Review>()
+               .HasIndex(r => new { r.UserId, r.ProductId })
+               .IsUnique();
 
         }
     }

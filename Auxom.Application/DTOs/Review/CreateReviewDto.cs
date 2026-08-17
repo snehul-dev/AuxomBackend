@@ -4,7 +4,10 @@ using System.Text;
 
 namespace Auxom.Application.DTOs.Review
 {
-    internal class CreateReviewDto
+    public class CreateReviewDto
     {
+      
+        public decimal Rating { get; set; }
+        public string Description { get; set; } = string.Empty;
     }
 }

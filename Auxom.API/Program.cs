@@ -63,6 +63,9 @@ namespace Auxom.API
 
             builder.Services.AddScoped<IUserProfileService, UserProfileService>();
 
+            builder.Services.AddScoped<IReviewRepository, ReviewRepository>();
+            builder.Services.AddScoped<IReviewService, ReviewService>();
+
             var cloudinary = new Cloudinary(
             new Account(
                 builder.Configuration["CloudinarySettings:CloudName"],

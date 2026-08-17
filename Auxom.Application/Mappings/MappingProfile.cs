@@ -4,6 +4,7 @@ using Auxom.Application.DTOs.Auth;
 using Auxom.Application.DTOs.Cart;
 using Auxom.Application.DTOs.Order;
 using Auxom.Application.DTOs.Product;
+using Auxom.Application.DTOs.Review;
 using Auxom.Application.DTOs.User;
 using Auxom.Application.DTOs.Wishlist;
 using Auxom.Domain.Entities;
@@ -79,13 +80,13 @@ namespace Auxom.Application.Mappings
                 );
 
             CreateMap<User, UserProfileDto>()
-        .ForMember(
+             .ForMember(
             dest => dest.ProfileImageUrl,
             opt => opt.MapFrom(src => src.ProfileImageUrl)
         );
 
             CreateMap<UpdateProfileDto, User>()
-         .ForMember(
+             .ForMember(
              dest => dest.ProfileImageUrl,
              opt =>
              {
@@ -93,6 +94,12 @@ namespace Auxom.Application.Mappings
                  opt.MapFrom(src => src.ProfileImage);
              }
          );
+
+            CreateMap<CreateReviewDto, Review>();
+            CreateMap<Review, ReviewResponseDto>()
+                .ForMember(dest => dest.UserName,
+                opt => opt.MapFrom(src => src.User.FullName)
+                ); 
 
 
 

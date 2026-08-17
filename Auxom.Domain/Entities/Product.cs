@@ -26,6 +26,7 @@ namespace Auxom.Domain.Entities
         public ICollection<Wishlist> Wishlists { get; set; } = new List<Wishlist>();
 
         public ICollection<OrderItem> OrderItems { get; set; } = new List<OrderItem>();
+        public ICollection<Review> Reviews { get; set; } = new List<Review>();
 
     }
 }
