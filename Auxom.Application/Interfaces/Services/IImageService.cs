@@ -9,7 +9,8 @@ namespace Auxom.Application.Interfaces.Services
         Task<string> UploadImageAsync(
             Stream imageStream,
             string fileName,
-            string contentType
+            string contentType,
+            string folder
             );
     }
 }

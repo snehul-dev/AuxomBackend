@@ -15,12 +15,12 @@ namespace Auxom.Infrastructure.Services
             _cloudinary = cloudinary;
         }
 
-        public async Task<string> UploadImageAsync(Stream imageStream, string fileName, string contentType)
+        public async Task<string> UploadImageAsync(Stream imageStream, string fileName, string contentType , string folder)
         {
             var uploadParams = new ImageUploadParams
             {
                 File = new FileDescription(fileName, imageStream),
-                Folder = "Auxom/products"
+                Folder = folder
             };
             var result = await _cloudinary.UploadAsync(uploadParams);
             if (result.Error != null)

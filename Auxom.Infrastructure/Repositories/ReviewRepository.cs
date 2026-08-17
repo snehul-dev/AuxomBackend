@@ -3,7 +3,7 @@ using Auxom.Domain.Interfaces;
 using Auxom.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using System;
-using System.Collections.Generic;
+using System.Collections.Generic; 
 using System.Text;
 
 namespace Auxom.Infrastructure.Repositories

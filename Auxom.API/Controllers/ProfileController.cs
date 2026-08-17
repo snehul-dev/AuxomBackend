@@ -40,7 +40,8 @@ namespace Auxom.API.Controllers
                 var profileImageUrl = await _imageService.UploadImageAsync(
           request.ProfileImage.OpenReadStream(),
           request.ProfileImage.FileName,
-          request.ProfileImage.ContentType
+          request.ProfileImage.ContentType,
+          "ProfileImage"
           );
                 dto.ProfileImage = profileImageUrl;
             }

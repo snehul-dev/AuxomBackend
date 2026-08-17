@@ -43,7 +43,8 @@ namespace Auxom.API.Controllers.User
             string imageUrl = await _imageService.UploadImageAsync(
                 request.Image.OpenReadStream(),
                 request.Image.FileName,
-                request.Image.ContentType
+                request.Image.ContentType,
+                "products"
                 );
             var dto = _mapper.Map<CreateProductDto>(request);
             dto.Image = imageUrl;
@@ -86,7 +87,8 @@ namespace Auxom.API.Controllers.User
                 string imageUrl = await _imageService.UploadImageAsync(
                 request.Image.OpenReadStream(),
                 request.Image.FileName,
-                request.Image.ContentType
+                request.Image.ContentType,
+                "products"
           );
                
                 dto.Image = imageUrl;
