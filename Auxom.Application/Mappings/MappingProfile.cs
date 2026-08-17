@@ -14,9 +14,10 @@ using System.Text;
 
 namespace Auxom.Application.Mappings
 {
-    public class MappingProfile:Profile
+    public class MappingProfile : Profile
     {
-        public MappingProfile() {
+        public MappingProfile()
+        {
 
             CreateMap<RegisterDto, User>();
             CreateMap<User, LoginResponseDto>();
@@ -27,7 +28,7 @@ namespace Auxom.Application.Mappings
                 .ForMember(
                 dest => dest.Image,
                 opt => opt.Condition(src => src.Image != null));
-            
+
 
             CreateMap<Cart, CartDto>()
             .ForMember(dest => dest.CartId,
@@ -77,7 +78,23 @@ namespace Auxom.Application.Mappings
                 opt => opt.MapFrom(src => src.OrderItems.Sum(x => x.Quantity))
                 );
 
-    
+            CreateMap<User, UserProfileDto>()
+        .ForMember(
+            dest => dest.ProfileImageUrl,
+            opt => opt.MapFrom(src => src.ProfileImageUrl)
+        );
+
+            CreateMap<UpdateProfileDto, User>()
+         .ForMember(
+             dest => dest.ProfileImageUrl,
+             opt =>
+             {
+                 opt.PreCondition(src => !string.IsNullOrEmpty(src.ProfileImage));
+                 opt.MapFrom(src => src.ProfileImage);
+             }
+         );
+
+
 
             CreateMap<CreateAddressDto, Address>();
             CreateMap<Address, AddressDto>()
@@ -96,11 +113,6 @@ namespace Auxom.Application.Mappings
                 )
                 .ForMember(dest => dest.Total,
                 opt => opt.MapFrom(src => src.Price * src.Quantity));
-            
-
-                
-                
-
 
         }
     }

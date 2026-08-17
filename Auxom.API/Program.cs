@@ -61,6 +61,8 @@ namespace Auxom.API
             builder.Services.AddScoped<IDashBoardService, DashBoardService>();
             builder.Services.AddScoped<IImageService, CloudinaryImageService>();
 
+            builder.Services.AddScoped<IUserProfileService, UserProfileService>();
+
             var cloudinary = new Cloudinary(
             new Account(
                 builder.Configuration["CloudinarySettings:CloudName"],

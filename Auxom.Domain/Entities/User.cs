@@ -15,6 +15,7 @@ namespace Auxom.Domain.Entities
         public string PasswordHash { get; set; } = string.Empty;
 
         public string Role { get; set; } = "User";
+        public string ProfileImageUrl { get; set; } = string.Empty;
 
         public bool IsBlocked { get; set; } = false;
 
