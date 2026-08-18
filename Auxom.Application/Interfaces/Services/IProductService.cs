@@ -3,17 +3,21 @@ using Auxom.Domain.Entities;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using Auxom.Application.DTOs.Paginaton;
 
 namespace Auxom.Application.Interfaces.Services
 {
     public interface IProductService
     {
 
-        Task<IEnumerable<ProductDto>> GetProductsAsync();
 
         Task<ProductDto?> GetProductByIdAsync(Guid id);
 
         Task<ProductDto> AddProductAsync(CreateProductDto dto);
+
+        Task<PagedResultDto<ProductDto>> GetProductsAsync(
+            int pageNumber,
+            int pageSize);
 
         Task DeleteProductAsync(Guid id);
 

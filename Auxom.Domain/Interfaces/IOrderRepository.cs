@@ -13,6 +13,7 @@ namespace Auxom.Domain.Interfaces
         Task<IEnumerable<Order>> GetOrdersAsync();
         Task<Order?> GetOrderById(Guid OrderId);
         Task<int> GetTotalOrdersAsync();
+        Task<Order?> GetOrderByIdWithItemsAsync(Guid userId , Guid orderId);
         Task<decimal> GetTotalRevenueAsync();
         Task SaveChangesAsync();
     }

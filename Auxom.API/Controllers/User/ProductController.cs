@@ -4,6 +4,7 @@ using Auxom.Application.DTOs.Product;
 using Auxom.Application.Interfaces.Services;
 using Auxom.Domain.Entities;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Auxom.API.Controllers.User
@@ -69,11 +70,15 @@ namespace Auxom.API.Controllers.User
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetProductsAsync()
+        public async Task<IActionResult> GetProductsAsync(
+            [FromQuery] int pageNumber = 1,
+            [FromQuery] int pageSize = 10)
         {
-            var products = await _productService.GetProductsAsync();
-            return Ok(products);
+            var result = await _productService.GetProductsAsync(
+                pageNumber,
+                pageSize);
 
+            return Ok(result);
         }
 
         [Authorize(Roles = "Admin")]
@@ -102,6 +107,7 @@ namespace Auxom.API.Controllers.User
 
 
         }
+
 
         [HttpGet("search")]
         public async Task<IActionResult> SearchProductsAsync([FromQuery] string keyword)

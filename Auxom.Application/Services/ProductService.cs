@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Auxom.Application.DTOs.Paginaton;
 using Auxom.Application.DTOs.Product;
 using Auxom.Application.Exceptions;
 using Auxom.Application.Interfaces.Services;
@@ -63,11 +64,7 @@ namespace Auxom.Application.Services
             return _mapper.Map<ProductDto>(product);
         }
 
-        public async Task<IEnumerable<ProductDto>> GetProductsAsync()
-        {
-            var products = await _productRepository.GetProductsAsync();
-            return _mapper.Map<IEnumerable<ProductDto>>(products);
-        }
+  
 
         public async Task UpdateProductAsync(Guid id, UpdateProductDto dto)
         {
@@ -105,6 +102,37 @@ namespace Auxom.Application.Services
             return _mapper.Map<IEnumerable<ProductDto>>(products);
         }
 
-    
+        public async Task<PagedResultDto<ProductDto>> GetProductsAsync(
+     int pageNumber,
+     int pageSize)
+        {
+            if (pageNumber <= 0)
+                pageNumber = 1;
+
+            if (pageSize <= 0)
+                pageSize = 10;
+
+            if (pageSize > 100)
+                pageSize = 100;
+
+            var result = await _productRepository
+                .GetPagedProductsAsync(pageNumber, pageSize);
+
+            var products = _mapper.Map<List<ProductDto>>(result.Products);
+
+            var totalPages = (int)Math.Ceiling(
+                result.TotalCount / (double)pageSize);
+
+            return new PagedResultDto<ProductDto>
+            {
+                Items = products,
+                PageNumber = pageNumber,
+                PageSize = pageSize,
+                TotalCount = result.TotalCount,
+                TotalPages = totalPages
+            };
+        }
+
+
     }
 }

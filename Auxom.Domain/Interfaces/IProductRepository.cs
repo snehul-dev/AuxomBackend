@@ -14,7 +14,9 @@ namespace Auxom.Domain.Interfaces
         Task<int> GetTotalProductsAsync();
        
         Task<IEnumerable<Product>> GetProductsAsync();
-
+        Task<(List<Product> Products, int TotalCount)> GetPagedProductsAsync(
+            int pageNumber,
+            int pageSize);
         Task AddProductAsync(Product product);
 
         void DeleteProduct(Product product);

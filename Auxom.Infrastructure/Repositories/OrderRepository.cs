@@ -38,6 +38,17 @@ namespace Auxom.Infrastructure.Repositories
             
         }
 
+        public async Task<Order?> GetOrderByIdWithItemsAsync(
+         Guid userId,Guid orderId)
+        {
+            return await _context.Orders
+                .Include(o => o.OrderItems)
+                .ThenInclude(oi => oi.Product)
+                .FirstOrDefaultAsync(
+                    o => o.Id == orderId &&
+                         o.UserId == userId);
+        }
+
         public async Task<IEnumerable<Order>> GetOrderByUserAsync(Guid userId)
         {
             return await _context.Orders.

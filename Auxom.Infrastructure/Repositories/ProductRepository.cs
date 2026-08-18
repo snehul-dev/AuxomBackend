@@ -120,6 +120,24 @@ namespace Auxom.Infrastructure.Repositories
             return await query.ToListAsync();
         }
 
+        public async Task<(List<Product> Products, int TotalCount)> GetPagedProductsAsync(
+    int pageNumber,
+    int pageSize)
+        {
+            var query = _context.Products
+                .AsNoTracking()
+                .OrderByDescending(p => p.CreatedAt);
+
+            var totalCount = await query.CountAsync();
+
+            var products = await query
+                .Skip((pageNumber - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
+
+            return (products, totalCount);
+        }
+
 
     }
 }

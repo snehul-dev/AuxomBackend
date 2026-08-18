@@ -1,18 +1,22 @@
 ﻿using Auxom.Application.DTOs.Razorpay;
 using Auxom.Application.Interfaces.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 
 namespace Auxom.API.Controllers.User
 {
+    [Authorize]
     [ApiController]
     [Route("api/payment")]
     public class PaymentController:ControllerBase
     {
         private readonly IPaymentService _paymentService;
-        public PaymentController(IPaymentService paymentService)
+        private readonly IOrderService _orderService;
+        public PaymentController(IPaymentService paymentService , IOrderService orderService)
         {
             _paymentService = paymentService;
+            _orderService = orderService;
             
         }
         [HttpPost("create-order")]
@@ -28,9 +32,14 @@ namespace Auxom.API.Controllers.User
         {
             Guid userId = GetUserId();
             var result = await _paymentService.VerifyPaymentAsync(userId, dto);
+            if (!result)
+            {
+                return BadRequest("Payment verification failed");
+            }
+            await _orderService.CompleteOnlineOrderAsync(userId,dto.OrderId);
             return Ok(new
             {
-                success = result
+                Message = "Payment verified and order placed successfully"
             });
         }
 

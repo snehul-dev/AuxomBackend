@@ -27,6 +27,16 @@ namespace Auxom.API.Controllers.User
                 Message = "Order placed successfully"
             });
         }
+        [HttpPost("pending")]
+        public async Task<IActionResult> CreatePendingOrderAsync(CreateOrderDto dto)
+        {
+            var userId = GetUserId();
+
+            var order = await _orderService
+                .CreatePendingOrderAsync(userId, dto);
+
+            return Ok(order);
+        }
 
         [HttpGet]
         public async Task<IActionResult> GetOrdersByUserAsync()
